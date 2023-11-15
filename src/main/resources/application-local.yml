@@ -26,6 +26,31 @@ spring:
         password: 1234
         driver-class-name: com.mysql.cj.jdbc.Driver
 
+    # Kafka 설정 추가
+#  kafka:
+#    #    bootstrap-servers: 10.176.12.164:9092 # Kafka 서비스의 CLUSTER-IP와 포트 -> 나중에 적용
+#    bootstrap-servers: 34.64.189.14:9092 # Kafka 서비스의 EXTERNAL-IP와 포트
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#    consumer:
+#      group-id: my-consumer-group
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  kafka:
+    consumer:
+      bootstrap-servers: 34.64.189.14:9092
+      group-id: test-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: 34.64.189.14:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
 logging.level:
   org.hibernate.orm.jdbc.bind: trace
   com.moa.participate: DEBUG

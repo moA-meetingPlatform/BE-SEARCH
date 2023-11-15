@@ -32,4 +32,5 @@ public class MeetingController {
         return ResponseEntity.ok(meetings);
     }
 
+
 }
