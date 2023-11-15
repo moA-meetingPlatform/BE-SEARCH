@@ -10,6 +10,12 @@ spring:
         format_sql: true
         show_sql: true
 
+  data:
+    redis:
+      port: 6379
+      host: 10.176.8.126
+      connect-timeout: 1000
+
   datasource:
     master:
       hikari:
@@ -28,8 +34,8 @@ spring:
 
   # Kafka 설정 추가
   kafka:
-#    bootstrap-servers: 10.176.12.164:9092 # Kafka 서비스의 CLUSTER-IP와 포트 -> 나중에 적용
-    bootstrap-servers: 34.64.189.14:9092 # Kafka 서비스의 EXTERNAL-IP와 포트
+    bootstrap-servers: 10.176.12.164:9092 # Kafka 서비스의 CLUSTER-IP와 포트 -> 나중에 적용
+#    bootstrap-servers: 34.64.189.14:9092 # Kafka 서비스의 EXTERNAL-IP와 포트
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer

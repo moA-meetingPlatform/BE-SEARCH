@@ -21,4 +21,6 @@ public class Meeting extends BaseCreateDateTime {
 
     @Column(name = "meeting_title", length = 150)
     private String meetingTitle;
+
+
 }

@@ -1,4 +1,4 @@
-package com.moa.search.application;
+package com.moa.search.infrastructure.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,4 +18,6 @@ public class KafkaProducer {
         System.out.println(String.format("Produce message : %s", message));
         this.kafkaTemplate.send(TOPIC, message);
     }
+
+
 }

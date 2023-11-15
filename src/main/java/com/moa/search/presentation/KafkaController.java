@@ -1,6 +1,6 @@
 package com.moa.search.presentation;
 
-import com.moa.search.application.KafkaProducer;
+import com.moa.search.infrastructure.kafka.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

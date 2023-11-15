@@ -1,4 +1,4 @@
-package com.moa.search.application;
+package com.moa.search.infrastructure.kafka;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -12,4 +12,6 @@ public class KafkaConsumer {
     public void consume(String message) throws IOException {
         System.out.println(String.format("Consumed message : %s", message));
     }
+
+
 }
