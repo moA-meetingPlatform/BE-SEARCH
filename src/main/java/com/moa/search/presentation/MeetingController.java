@@ -20,13 +20,13 @@ public class MeetingController {
         this.meetingService = meetingService;
     }
 
-    @GetMapping("/related-search")
-    public ResponseEntity<List<String>> getRelatedTitles(@RequestParam String keyword) {
-        List<String> relatedTitles = meetingService.getRelatedMeetingTitles(keyword);
-        return ResponseEntity.ok(relatedTitles);
-    }
+//    @GetMapping("/related-search")
+//    public ResponseEntity<List<String>> getRelatedTitles(@RequestParam String keyword) {
+//        List<String> relatedTitles = meetingService.getRelatedMeetingTitles(keyword);
+//        return ResponseEntity.ok(relatedTitles);
+//    }
 
-    @GetMapping("/search")
+    @GetMapping("/related-search")
     public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam String title) {
         List<Meeting> meetings = meetingService.searchMeetingsByTitle(title);
         return ResponseEntity.ok(meetings);
