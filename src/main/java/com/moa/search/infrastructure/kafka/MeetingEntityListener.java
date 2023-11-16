@@ -17,12 +17,12 @@ public class MeetingEntityListener {
         // Kafka로 전송할 메시지 생성
         String message = createMessage(meeting);
         // Kafka 토픽으로 메시지 전송
-        kafkaTemplate.send("meetingTopic", message);
+        kafkaTemplate.send("search", message);
     }
 
     private String createMessage(Meeting meeting) {
         // 메시지 생성 로직 구현
-        return "New Meeting: " + meeting.getMeetingTitle(); // 예시 메시지
+        return "New Meeting: " + meeting.getMeetingTitle()+ ", " + meeting.getId(); // 예시 메시지
     }
 
 }
