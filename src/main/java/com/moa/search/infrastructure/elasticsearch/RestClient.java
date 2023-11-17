@@ -11,16 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
-
-import javax.net.ssl.SSLContext;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.SSLContexts;
 
-import java.io.ByteArrayInputStream;
-import java.security.KeyStore;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.Base64;
+import javax.net.ssl.SSLContext;
 
 @Configuration
 public class RestClient {
@@ -31,8 +25,8 @@ public class RestClient {
     private String ELASTICSEARCH_USERNAME;
     @Value("awdfaf")
     private String ELASTICSEARCH_PASSWORD;
-    @Value("${ECK_ES_SSL_CERTIFICATE_AUTHORITY}")
-    private String sslCertificateBase64;
+    @Value("classpath:/mnt/elastic-internal/elasticsearch-association/elk/elasticsearch/certs/ca.crt")
+    private Resource sslCertificate;
 
     @Bean
     public org.elasticsearch.client.RestClient createClient() {
@@ -44,19 +38,11 @@ public class RestClient {
                         new HttpHost(ELASTICSEARCH_HOSTNAME, 9200, "https"))
                 .setHttpClientConfigCallback(httpClientBuilder -> {
                     try {
-                        CertificateFactory factory = CertificateFactory.getInstance("X.509");
-                        byte[] decodedCert = Base64.getDecoder().decode(sslCertificateBase64);
-                        X509Certificate cert = (X509Certificate) factory.generateCertificate(new ByteArrayInputStream(decodedCert));
-
-                        KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-                        trustStore.load(null, null);
-                        trustStore.setCertificateEntry("ca", cert);
-
                         SSLContextBuilder sslBuilder = SSLContexts.custom()
-                                .loadTrustMaterial(trustStore, null);
+                                .loadTrustMaterial(sslCertificate.getFile(), null);
                         SSLContext sslContext = sslBuilder.build();
-
-                        return httpClientBuilder.setSSLContext(sslContext);
+                        return httpClientBuilder.setSSLContext(sslContext)
+                                .setDefaultCredentialsProvider(credentialsProvider);
                     } catch (Exception e) {
                         throw new RuntimeException("SSL 컨텍스트 구성 중 오류 발생", e);
                     }

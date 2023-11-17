@@ -83,14 +83,24 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
-volumes: []
+volumes:
+  - name: es-certs
+    secret:
+      secretName: elasticsearch-es-http-ca-internal
+containers:
+  - name: elasticsearch-client
+    volumeMounts:
+      - name: es-certs
+        mountPath: /mnt/elastic-internal/elasticsearch-association/elk/elasticsearch/certs/ca.crt
+
+        
 # - name: foo
 #   secret:
 #     secretName: mysecret
 #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
+# volumeMounts: []
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
@@ -113,7 +123,4 @@ env:
         name: db-passwords
         key: slave-db-password
   - name: ECK_ES_SSL_CERTIFICATE_AUTHORITY
-    valueFrom:
-      secretKeyRef:
-        name: elasticsearch-es-http-ca-internal
-        key: tls.crt
+    value: /mnt/elastic-internal/elasticsearch-association/elk/elasticsearch/certs/ca.crt
