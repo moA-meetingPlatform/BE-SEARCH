@@ -10,14 +10,9 @@ import org.elasticsearch.client.RestClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.ssl.SSLContexts;
-
+import org.springframework.core.io.Resource;
 import javax.net.ssl.SSLContext;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.X509Certificate;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import org.apache.http.ssl.SSLContextBuilder;
 
 @Configuration
 public class RestClient {
@@ -28,8 +23,8 @@ public class RestClient {
     private String ELASTICSEARCH_USERNAME;
     @Value("awdfaf")
     private String ELASTICSEARCH_PASSWORD;
-    @Value("your-certificate-fingerprint") // 인증서 지문 값
-    private String sslCertificateFingerprint;
+    @Value("file:/mnt/elastic-internal/elasticsearch-association/elk/elasticsearch/certs/ca.crt")
+    private Resource caCertificate;
 
     @Bean
     public org.elasticsearch.client.RestClient createClient() {
@@ -42,42 +37,15 @@ public class RestClient {
                 .setHttpClientConfigCallback(httpClientBuilder -> {
                     try {
                         SSLContext sslContext = SSLContextBuilder.create()
-                                .loadTrustMaterial((chain, authType) -> {
-                                    for (X509Certificate cert : chain) {
-                                        try {
-                                            if (calculateFingerprint(cert, "SHA-256").equals(sslCertificateFingerprint)) {
-                                                return true;
-                                            }
-                                        } catch (NoSuchAlgorithmException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    }
-                                    return false;
-                                }).build();
+                                .loadTrustMaterial(caCertificate.getFile(), null) // CA 인증서 로드
+                                .build();
                         httpClientBuilder.setSSLContext(sslContext);
-                        httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
-                        return httpClientBuilder;
                     } catch (Exception e) {
                         throw new RuntimeException("SSL 컨텍스트 구성 중 오류 발생", e);
                     }
+                    return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
                 });
 
         return builder.build();
-    }
-
-    private static String calculateFingerprint(X509Certificate cert, String hashAlgorithm) throws NoSuchAlgorithmException, CertificateEncodingException {
-        MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
-        byte[] der = cert.getEncoded();
-        md.update(der);
-        byte[] digest = md.digest();
-        return toHexString(digest);
-    }
-
-    private static String toHexString(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b & 0xff));
-        }
-        return sb.toString();
     }
 }
