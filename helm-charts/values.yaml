@@ -112,3 +112,8 @@ env:
       secretKeyRef:
         name: db-passwords
         key: slave-db-password
+  - name: ECK_ES_SSL_CERTIFICATE_AUTHORITY
+    valueFrom:
+      secretKeyRef:
+        name: elasticsearch-es-http-ca-internal
+        key: tls.crt
