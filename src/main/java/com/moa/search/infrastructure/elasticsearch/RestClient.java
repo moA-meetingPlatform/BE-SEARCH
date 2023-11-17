@@ -20,7 +20,7 @@ public class RestClient {
     private String ELASTICSEARCH_HOSTNAME;
     @Value("elastic")
     private String ELASTICSEARCH_USERNAME;
-    @Value("bLp5gzh4qJxa74yC")
+    @Value("HM8u620hN79VOFsW")
     private  String ELASTICSEARCH_PASSWORD;
 
 
