@@ -12,6 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.SSLContexts;
+import org.springframework.core.io.Resource;
+import javax.net.ssl.SSLContext;
+
 @Configuration
 public class RestClient {
 
@@ -22,6 +27,8 @@ public class RestClient {
     private String ELASTICSEARCH_USERNAME;
     @Value("awdfaf")
     private  String ELASTICSEARCH_PASSWORD;
+    @Value("${ECK_ES_SSL_CERTIFICATE_AUTHORITY}")
+    private Resource sslCertificate; // 인증서 파일
 
     @Bean
     public org.elasticsearch.client.RestClient createClient() {
@@ -31,10 +38,14 @@ public class RestClient {
 
         RestClientBuilder builder = org.elasticsearch.client.RestClient.builder(
                         new HttpHost(ELASTICSEARCH_HOSTNAME, 9200, "https"))
-                .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-                    @Override
-                    public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
-                        return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+                .setHttpClientConfigCallback(httpClientBuilder -> {
+                    try {
+                        SSLContextBuilder sslBuilder = SSLContexts.custom()
+                                .loadTrustMaterial(sslCertificate.getURL(), null); // 인증서 로드
+                        SSLContext sslContext = sslBuilder.build();
+                        return httpClientBuilder.setSSLContext(sslContext);
+                    } catch (Exception e) {
+                        throw new RuntimeException("SSL 컨텍스트 구성 중 오류 발생", e);
                     }
                 });
 
