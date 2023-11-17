@@ -12,7 +12,7 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/es/search")
+@RequestMapping("/api/v1/search/es")
 public class ElasticSearchController {
 
     private final ElasticSearchService elasticSearchService;
