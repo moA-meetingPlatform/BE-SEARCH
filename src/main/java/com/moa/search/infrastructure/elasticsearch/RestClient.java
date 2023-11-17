@@ -30,7 +30,7 @@ public class RestClient {
                 new UsernamePasswordCredentials(ELASTICSEARCH_USERNAME, ELASTICSEARCH_PASSWORD));
 
         RestClientBuilder builder = org.elasticsearch.client.RestClient.builder(
-                        new HttpHost(ELASTICSEARCH_HOSTNAME, 9200, "http"))
+                        new HttpHost(ELASTICSEARCH_HOSTNAME, 9200, "https"))
                 .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
                     @Override
                     public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
