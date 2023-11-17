@@ -1,6 +1,5 @@
 package com.moa.search.infrastructure.elasticsearch;
 
-
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -11,24 +10,23 @@ import org.elasticsearch.client.RestClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 
+import javax.net.ssl.SSLContext;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.SSLContexts;
-import org.springframework.core.io.Resource;
-import javax.net.ssl.SSLContext;
 
 @Configuration
 public class RestClient {
-
 
     @Value("elasticsearch-es-http.elk.svc.cluster.local")
     private String ELASTICSEARCH_HOSTNAME;
     @Value("awdfaf")
     private String ELASTICSEARCH_USERNAME;
     @Value("awdfaf")
-    private  String ELASTICSEARCH_PASSWORD;
+    private String ELASTICSEARCH_PASSWORD;
     @Value("${ECK_ES_SSL_CERTIFICATE_AUTHORITY}")
-    private Resource sslCertificate; // 인증서 파일
+    private Resource sslCertificate; // SSL 인증서 파일
 
     @Bean
     public org.elasticsearch.client.RestClient createClient() {
@@ -41,7 +39,7 @@ public class RestClient {
                 .setHttpClientConfigCallback(httpClientBuilder -> {
                     try {
                         SSLContextBuilder sslBuilder = SSLContexts.custom()
-                                .loadTrustMaterial(sslCertificate.getURL(), null); // 인증서 로드
+                                .loadTrustMaterial(sslCertificate.getURL(), null); // SSL 인증서 로드
                         SSLContext sslContext = sslBuilder.build();
                         return httpClientBuilder.setSSLContext(sslContext);
                     } catch (Exception e) {
