@@ -47,7 +47,7 @@ dependencies {
     //redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    implementation 'org.elasticsearch.client:elasticsearch-rest-client:8.11.0'
 
 
     sourceSets {
@@ -63,7 +63,11 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
 }
+
+
 
 tasks.named('test') {
     useJUnitPlatform()

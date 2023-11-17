@@ -2,18 +2,32 @@ package com.moa.search.infrastructure.elasticsearch;
 
 
 import lombok.RequiredArgsConstructor;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.nio.entity.NStringEntity;
+import org.apache.http.util.EntityUtils;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @Service
 public class ElasticSearchService {
 
+    private final RestClient restClient;
 
-    private final ElasticSearchItemsRepository elasticSearchItemsRepository;
+    public void testSearch() throws IOException {
+        Request request = new Request("GET", "/search/_search");
 
-    // search 인덱스에서 검색어를 통해 검색
-    public Iterable<ElasticSearchItems> getUserById() {
-        return elasticSearchItemsRepository.findAll();
+        Response response = restClient.createClient().performRequest(request);
+
+        String result = EntityUtils.toString(response.getEntity());
+
+        System.out.println(result);
     }
+
 
 }

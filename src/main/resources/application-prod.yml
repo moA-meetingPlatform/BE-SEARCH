@@ -45,10 +45,10 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
   # elastic search 설정 추가
-  elasticsearch:
-    rest.uris: http://10.176.14.192:9200
-    rest.username: awdfaf
-    rest.password: awdfaf
+#  elasticsearch:
+#    rest.uris: https://10.176.14.192:9200
+#    rest.username: awdfaf
+#    rest.password: awdfaf
 
 logging.level: # 서버 디버깅용 임시 설정
   org.hibernate.orm.jdbc.bind: trace
