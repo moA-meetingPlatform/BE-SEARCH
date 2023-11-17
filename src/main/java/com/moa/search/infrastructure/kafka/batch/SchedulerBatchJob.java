@@ -23,7 +23,7 @@ public class SchedulerBatchJob {
 
     private final Job job;
 
-    @Scheduled(cron = "0 0 24 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void perform() throws JobExecutionException {
 
 //        LocalDateTime start = LocalDateTime.now().minusHours(1L);
