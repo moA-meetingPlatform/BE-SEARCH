@@ -8,7 +8,7 @@ image:
   repository: awdfaf/be-search
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: dev-21
+  tag: dev-22
 
 container:
   port: 8000
