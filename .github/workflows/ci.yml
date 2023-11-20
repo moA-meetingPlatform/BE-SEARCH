@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 env:
-  IMAGE_TAG: dev-28
+  IMAGE_TAG: dev-29
 
 jobs:
 
