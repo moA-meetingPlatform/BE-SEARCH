@@ -20,7 +20,7 @@ public class Meeting extends BaseCreateDateTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "meeting_title", length = 150)
+    @Column(name = "title", length = 150)
     private String meetingTitle;
 
 
